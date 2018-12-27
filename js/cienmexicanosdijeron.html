@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>100 Mexicanos dijeron</title>
+</head>
+	<body>		
+		<h2 id="demo">Pregunta aqui</h2>
+		<section id = eligeTurno>		
+			<button id= "turnoEquipo1">Turno Equipo 1</button>
+			<button id= "turnoEquipo2">Turno Equipo 2</button>	
+		</section>	
+		
+		
+		
+	                                           
+		<script type="text/javascript">		
+			//puntos por equipo
+			var contadorGeneralxRonda = 0;
+			var contadorEquipo1 = 0;
+			var contadorEquipo2 = 0;
+			var respuestasPorPregunta = 0;
+
+			//turnos de los equipos
+			var turnoEquipo1 = false;
+			var turnoEquipo2 = false;
+			var strikes = 0;
+			var arr = [];
+			var equipoActual ="";
+			//botones para responder
+			
+
+
+			//busca todos los botones existentes
+			var buttons = document.querySelectorAll('button');
+
+
+			//por todos los botones que escucha, por cada uno de ellos, identificando el ID correspondiente a cada boton,
+			//va a llamar la funcion juego()
+			buttons.forEach(function (button){
+				button.addEventListener('click', juego);	
+			});
+
+
+			function juego(event){
+				//muestra en consola la propiedad del objeto boton: "tarjet", el id que identifica al boton
+				var button = event.target;
+				contadorGeneralxRonda = 0;
+				console.log(button.id);						
+				if(button.id == "turnoEquipo1"){
+					alert('¡Turno Equipo 1!');
+					turnoEquipo1 = true;
+    				document.getElementById("turnoEquipo1").disabled = true;
+    				document.getElementById("turnoEquipo2").disabled = true;
+					mostrarPregunta();
+				}
+				if(button.id == "turnoEquipo2"){
+					alert("¡Turno Equipo 2!");
+					turnoEquipo2 = true;
+					document.getElementById("turnoEquipo1").disabled = true;
+    				document.getElementById("turnoEquipo2").disabled = true;
+					mostrarPregunta();
+				}
+			}
+
+
+
+			//alert(pregunta[preguntaRandom].respuesta[res]);
+			function comprobarRespuesta(respuestaDelEquipo,preguntaRandom){
+				//debugger;								
+				if(pregunta[preguntaRandom].respuesta.hasOwnProperty(respuestaDelEquipo)){
+
+					if(arr.indexOf(respuestaDelEquipo) == -1){
+						arr.push(respuestaDelEquipo);
+						console.log(arr);
+						respuestasPorPregunta += 1;
+						contadorGeneralxRonda += pregunta[preguntaRandom].respuesta[respuestaDelEquipo];
+						console.log("Respuesta: " + respuestaDelEquipo + " : Puntos hasta ahora: " + contadorGeneralxRonda);
+						if(respuestasPorPregunta <5 ){
+							let respuestaDelEquipo = prompt("Otra respuesta:");
+							comprobarRespuesta(respuestaDelEquipo,preguntaRandom);
+						}
+						else{
+							respuestasPorPregunta = 0;							
+							if(equipoActual == "Equipo1" && turnoEquipo1)
+								contadorEquipo1+=contadorGeneralxRonda;
+							if(equipoActual == "Equipo2" && turnoEquipo2)
+								contadorEquipo1+=contadorGeneralxRonda;
+
+							alert('Gana la ronda el ' + equipoActual);
+							console.log(contadorEquipo1);
+							console.log(contadorEquipo2);
+							console.log();
+
+							equipoActual = "";
+							turnoEquipo1 = false;
+							turnoEquipo2 = false;
+							strikes = 0;							
+							respuestasPorPregunta = 0;
+
+							//turnos de los equipos
+							turnoEquipo1 = false;
+							turnoEquipo2 = false;
+							strikes = 0;
+							arr = [];
+							equipoActual ="";
+							document.getElementById('demo').innerHTML ="";
+							document.getElementById("turnoEquipo1").disabled = false;
+    						document.getElementById("turnoEquipo2").disabled = false;
+							juego();
+						}												
+					}
+					else{
+						alert("¡Esa ya está!");							
+						let respuestaDelEquipo = prompt("Intenta otra:");
+						comprobarRespuesta(respuestaDelEquipo,preguntaRandom);
+					}
+				}
+				else{
+					strikes+=1;
+					if(strikes < 3){
+						alert('¡Incorrecto!' + strikes);
+						let respuestaDelEquipo = prompt("Intenta otra:");
+						comprobarRespuesta(respuestaDelEquipo,preguntaRandom);
+					}
+					else{
+						alert('¡Pierdes ' + equipoActual + "!");
+						roboDePuntos(preguntaRandom);
+					}					
+				} 		
+			}
+
+
+
+			function mostrarPregunta()
+			{				
+				var preguntaRandom = Math.floor(Math.random()*10)			
+				document.getElementById('demo').innerHTML =pregunta[preguntaRandom].pregunta;
+								
+				setTimeout(function(){
+					if(turnoEquipo1)
+						equipoActual = "Equipo1";
+					else
+						equipoActual = "Equipo2";
+					let respuestaDelEquipo = prompt("Ingresa tu respuesta "+ equipoActual);		
+					comprobarRespuesta(respuestaDelEquipo,preguntaRandom);									
+
+ 				}, 2500);				
+			}
+
+			function roboDePuntos(preguntaRandom)
+			{
+				strikes = 0;
+				if(turnoEquipo1){
+					turnoEquipo1 = false;
+					turnoEquipo2 = true;
+					equipoActual = "Equipo2";
+				}
+				else{
+					turnoEquipo1 = true;
+					turnoEquipo2 = false;
+					equipoActual = "Equipo1";
+				}	
+				let respuestaDelEquipo = prompt(equipoActual + ", ¿Listos para el robo de puntos?, ¡ingresa tu respuesta!:");		
+				console.log(respuestaDelEquipo);
+				comprobarRespuesta(respuestaDelEquipo,preguntaRandom);
+			}
+	
+			var pregunta =
+			[
+			  {pregunta:"Si fueras caminando y tu suegra se cayera, ¿qué harías?", respuesta:{"levantarla":52,"ayudar":27,"me rio":12,"dejarla":8,"corro":1}},
+			  {pregunta:"Menciona algo que es complicado hacer en la nieve", respuesta:{"caminar":33,"correr":24,"manejar":23,"esquiar":11, "fogata":9}},
+			  {pregunta:"Menciona un oficio que puede ser perfecto para un amante de los animales",respuesta:{"veterinario":58,"zoologico":21,"cuidador":13,"entrenador":5,"domador":3}},
+			  {pregunta:"Razón por la que te podrías pasar una luz roja",respuesta:{"emergencia":33,"distraccion":30,"hablar por telefono":18,"descuido":10,"mensajeando":9}},
+			  {pregunta:"Si tuviera la crisis de los 40, ¿qué le compraría a un hombre?",respuesta:{"carro":43,"motocicleta":20,"ropa":18,"licor":12,"vitaminas":7}},
+			  {pregunta:"¿Qué tipo de música utilizas mientras limpias tu casa?",respuesta:{"salsa":31,"regional":22,"romanticas":21,"ranchera":18,"bachata":8}},
+			  {pregunta:"Cuando nadas en el mar, ¿De qué debes tener cuidado?",respuesta:{"tiburon":67,"ahogarse":16,"olas":12,"agua":3,"profundo":2}},
+			  {pregunta:"¿Cuál fue el primer alimento que aprendiste a cocinar?",respuesta:{"huevos":33,"frijoles":31,"arroz":19,"sopa":9,"carne":8}},
+			  {pregunta:"Además de la iglesia, lugar común para casarse",respuesta:{"playa":36,"ante juez":21,"registro civil":17,"casa":15,"corte":11}},
+			  {pregunta:"Planeta que es muy común ver en las oficinas de hollywood",respuesta:{"marte":58,"tierra":19,"luna":15,"jupiter":5,"sol":3}},
+			  {pregunta:"Fruta que compras en varias piezas",respuesta:{"uva":35,"platano":19,"manzana":15,"naranja":18,"fresa":13}},
+			]
+		</script>
+	</body>
+</html>
+
