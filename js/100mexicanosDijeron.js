@@ -50,8 +50,6 @@ function juego(event){
 function comprobarRespuesta(respuestaDelEquipo,preguntaRandom){
 	//debugger;								
 	if(pregunta[preguntaRandom].respuesta.hasOwnProperty(respuestaDelEquipo)){
-		
-
 		if(arr.indexOf(respuestaDelEquipo) == -1){
 			arr.push(respuestaDelEquipo);
 			console.log(arr);
@@ -125,7 +123,7 @@ function comprobarRespuesta(respuestaDelEquipo,preguntaRandom){
 						strikes = 0;
 						arr = [];
 						equipoActual ="";						
-						numRespuesta =0;
+						numRespuesta = 0;
 
 						for (var i = 0; i < 5; i++) {							
 							document.getElementById('respuesta'+i).innerHTML= "-";
@@ -189,12 +187,12 @@ function mostrarPregunta()
 
 	setTimeout(function(){	
 		if(!turnoEquipo1 && !turnoEquipo2 && respuestasPorPregunta == 0){
-			debugger;
+			//debugger;
 			document.getElementById("turnoEquipo1").disabled = false;
 			document.getElementById("turnoEquipo2").disabled = false;
 			document.getElementById("turnoEquipo1").style.display = 'flex';
 			document.getElementById("turnoEquipo2").style.display = 'flex';
-			debugger;
+			//debugger;
 			buttons.forEach(function (button){
 				button.addEventListener('click',eligeTurno);
 				// function eligeTurno(event){
@@ -222,19 +220,20 @@ function mostrarPregunta()
 				// }
 
 				setTimeout(function(){
+					//debugger;
 					button.removeEventListener("click", eligeTurno);				
 				}, 2500);			
 			});			
 		}
 		else{
-			debugger;
+			//debugger;
 			setTimeout(function(){
 				if(turnoEquipo1)
 					equipoActual = "Equipo1";
 				else
 					equipoActual = "Equipo2";
 				let respuestaDelEquipo = prompt("Ingresa tu respuesta "+ equipoActual);		
-				debugger;
+			//	debugger;
 				comprobarRespuesta(respuestaDelEquipo,preguntaRandom);									
 			}, 2500);			
 		}
@@ -246,7 +245,7 @@ function mostrarPregunta()
 function eligeTurno(event){
 					var button = event.target;
 					console.log(button);
-					debugger;
+					//debugger;
 					if(button.id == "turnoEquipo1"){
 						document.getElementById("turnoEquipo1").disabled = true;
 					    document.getElementById("turnoEquipo2").disabled = true;									    
@@ -254,7 +253,7 @@ function eligeTurno(event){
 					    document.getElementById("turnoEquipo2").style.display = 'none';
 					    turnoEquipo1 = true;
 						alert('¡Turno Equipo 1!');
-						debugger;
+						//debugger;
 						setTimeout(comprobarTurno(preguntaRandom), 2500);				
 					}
 					if(button.id == "turnoEquipo2"){
@@ -264,7 +263,7 @@ function eligeTurno(event){
 					    document.getElementById("turnoEquipo2").style.display = 'none';
 					    turnoEquipo2 = true;
 						alert("¡Turno Equipo 2!");
-						debugger;
+						//debugger;
 						setTimeout(comprobarTurno(preguntaRandom), 2500);				
 					}
 				}
@@ -285,7 +284,7 @@ function comprobarTurno(preguntaRandom){
 	else
 		equipoActual = "Equipo2";
 	let respuestaDelEquipo = prompt("Ingresa tu respuesta "+ equipoActual);		
-	debugger;
+	//debugger;
 	comprobarRespuesta(respuestaDelEquipo,preguntaRandom);									
 }
 
@@ -330,7 +329,7 @@ var pregunta =
   {pregunta:"Menciona algo que si deja de funcionar en casa te pone de mal humor",respuesta:{"internet":41,"television":38,"estufa":13,"luz":5,"radio":3}},
   {pregunta:"Menciona un lugar para el que tienes que hacer una reservación",respuesta:{"restaurante":50,"hotel":38,"viaje":7,"aeropuerto":5,"doctor":1}},
   {pregunta:"Lugar en el que hay varios espejos",respuesta:{"baño":38,"tienda":22,"peluqueria":19,"probador":12,"casa":9}},
-  {pregunta:"Algo que utilizas para cubrir tus orejas",respuesta:{"gorro":55,"audifonos":23,"gorra":15,"orejeras":4,"tampones":3}},
+  {pregunta:"Algo que utilizas para cubrir tus orejas",respuesta:{"gorro":55,"audifonos":23,"gorra":15,"orejeras":4,"tapones":3}},
   {pregunta:"Menciona algo que te puede provocar alergia",respuesta:{"polvo":29,"polen":27,"animales":17,"plantas":15,"medicina":12}},
   {pregunta:"Cuando sales de viaje, ¿qué es lo peor que podrías olvidar",respuesta:{"dinero":50,"pasaporte":27,"ropa":11,"cepillo dental":8,"cartera":4}},
   {pregunta:"Si la cenicienta fuera al psicólogo, ¿de qué hablaría con él?",respuesta:{"problemas":31,"principe":22,"madrastra":21,"traumas":18,"hada madrina":8}},
@@ -349,7 +348,7 @@ var pregunta =
 
   {pregunta:"Si la silla donde te sientas todo el día se pudiera quejar, ¿qué te diría?",respuesta:{"levantate":31,"baja de peso":22,"como pesas":21,"hueles mal":18,"no te muevas":8}},
   {pregunta:"Si un maniquí pudiera hablar, ¿qué diría sobre su trabajo?",respuesta:{"aburrido":39,"cansado":23,"excelente":15,"facil":13,"flojo":10}},
-  {pregunta:"Si tu suegra fuera una vivora, ¿cuál sería?",respuesta:{"cascabel":37,"cobra":28,"ananconda":23,"coralillo":8,"serpiente":4}},  
+  {pregunta:"Si tu suegra fuera una vivora, ¿cuál sería?",respuesta:{"cascabel":37,"cobra":28,"anaconda":23,"coralillo":8,"serpiente":4}},  
   {pregunta:"Además de cocinar, ¿qué otra cosa podrías hacer en la cocina?",respuesta:{"limpiar":36,"lavar trastes":33,"platicar":17,"comer":12,"cafe":2}},
   {pregunta:"Transporte que te daría mucho miedo si fallara",respuesta:{"avion":33,"carro":31,"tren":20,"barco":11,"helicoptero":5}},
   {pregunta:"Algo que no debes hacer cuando te detiene un policía de tránsito",respuesta:{"correr":34,"huir":26,"bajarse":16,"alegar":15,"mentir":9}},  
