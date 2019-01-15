@@ -1,6 +1,4 @@
 //puntos por equipo
-
-
 var contadorGeneralxRonda = 0;
 var contadorEquipo1 = 0;
 var contadorEquipo2 = 0;
@@ -13,12 +11,19 @@ var strikes = 0;
 var arr = [];
 var equipoActual ="";
 var numRespuesta =0;
-
+var preguntaRandom = "";
 
 //botones para responder
-
 //busca todos los botones existentes
 var buttons = document.querySelectorAll('button');
+
+
+document.getElementById("turnoEquipo1").disabled = true;
+document.getElementById("turnoEquipo2").disabled = true;
+document.getElementById("turnoEquipo1").style.display = 'none';
+document.getElementById("turnoEquipo2").style.display = 'none';
+
+
 
 //por todos los botones que escucha, por cada uno de ellos, identificando el ID correspondiente a cada boton,
 //va a llamar la funcion juego()
@@ -31,18 +36,10 @@ function juego(event){
 	var button = event.target;
 	contadorGeneralxRonda = 0;
 	console.log(button.id);						
-	if(button.id == "turnoEquipo1"){
-		alert('¡Turno Equipo 1!');
-		turnoEquipo1 = true;
-		document.getElementById("turnoEquipo1").disabled = true;
-		document.getElementById("turnoEquipo2").disabled = true;
-		mostrarPregunta();
-	}
-	if(button.id == "turnoEquipo2"){
-		alert("¡Turno Equipo 2!");
-		turnoEquipo2 = true;
-		document.getElementById("turnoEquipo1").disabled = true;
-		document.getElementById("turnoEquipo2").disabled = true;
+	if(button.id == "comenzar"){
+		alert('¡Incia Ronda!');		
+		document.getElementById("comenzar").style.display = 'none';
+		document.getElementById("comenzar").disabled = true;
 		mostrarPregunta();
 	}
 }
@@ -53,6 +50,7 @@ function juego(event){
 function comprobarRespuesta(respuestaDelEquipo,preguntaRandom){
 	//debugger;								
 	if(pregunta[preguntaRandom].respuesta.hasOwnProperty(respuestaDelEquipo)){
+		
 
 		if(arr.indexOf(respuestaDelEquipo) == -1){
 			arr.push(respuestaDelEquipo);
@@ -66,20 +64,20 @@ function comprobarRespuesta(respuestaDelEquipo,preguntaRandom){
 
 			var audio = new Audio('audio/respuestaCorrecta.wav');
 			audio.play();
-
 			console.log(respuestaActual);
 			console.log(respuestaActualValor);
 		
-			setTimeout(function(){					
+			setTimeout(function(){
 				document.getElementById(respuestaActual).innerHTML= respuestaDelEquipo;
-  				document.getElementById(respuestaActualValor).innerHTML= pregunta[preguntaRandom].respuesta[respuestaDelEquipo];						
-			}, 1000);			
+  				document.getElementById(respuestaActualValor).innerHTML= pregunta[preguntaRandom].respuesta[respuestaDelEquipo];
+  				document.getElementById('puntosxronda').innerHTML = contadorGeneralxRonda;
+			}, 1000);
 	
 
   			
 			numRespuesta+=1;												
 			
-			if(respuestasPorPregunta <5 ){				
+			if(respuestasPorPregunta <5 ){
 				setTimeout(function(){					
 					let respuestaDelEquipo = prompt("Otra respuesta:");
 					comprobarRespuesta(respuestaDelEquipo,preguntaRandom);					
@@ -91,6 +89,9 @@ function comprobarRespuesta(respuestaDelEquipo,preguntaRandom){
 					contadorEquipo1+=contadorGeneralxRonda;
 				if(equipoActual == "Equipo2" && turnoEquipo2)
 					contadorEquipo2+=contadorGeneralxRonda;
+
+				console.log('turno de equipo al momento:' + equipoActual);
+
 
 				setTimeout(function(){									
 					var audio = new Audio('audio/Ganador.wav');
@@ -115,33 +116,22 @@ function comprobarRespuesta(respuestaDelEquipo,preguntaRandom){
 						console.log(contadorEquipo1);
 						console.log(contadorEquipo2);
 						console.log();
-						equipoActual = "";
-						turnoEquipo1 = false;
-						turnoEquipo2 = false;
-						strikes = 0;							
+						equipoActual = "";						
 						respuestasPorPregunta = 0;
 
 						//turnos de los equipos
 						turnoEquipo1 = false;
 						turnoEquipo2 = false;
 						strikes = 0;
-						//arr = [];
-						equipoActual ="";
-						
+						arr = [];
+						equipoActual ="";						
 						numRespuesta =0;
 
-						for (var i = 0; i < 5; i++) {
-							// let respuestaActual= 'respuesta'+numRespuesta;
-							// let respuestaActualValor= 'respuestaValor'+numRespuesta;
+						for (var i = 0; i < 5; i++) {							
 							document.getElementById('respuesta'+i).innerHTML= "-";
   							document.getElementById('respuestaValor'+i).innerHTML= "-";
-						}
-
-
-						document.getElementById("turnoEquipo1").disabled = false;
-						document.getElementById("turnoEquipo2").disabled = false;
-						juego();
-						// comprobarRespuesta(respuestaDelEquipo,preguntaRandom);					
+						}					
+						mostrarPregunta();						
 					}, 2000);
 				}, 2000);
 			}												
@@ -191,23 +181,116 @@ function comprobarRespuesta(respuestaDelEquipo,preguntaRandom){
 
 function mostrarPregunta()
 {				
-
-
-	var preguntaRandom = Math.floor(Math.random()*100/2)				
+	preguntaRandom = Math.floor(Math.random()*100/2);
 	console.log(preguntaRandom);
-debugger;
 	document.getElementById('pregunta').innerHTML =pregunta[preguntaRandom].pregunta;
-					
-	setTimeout(function(){
-		if(turnoEquipo1)
-			equipoActual = "Equipo1";
-		else
-			equipoActual = "Equipo2";
-		let respuestaDelEquipo = prompt("Ingresa tu respuesta "+ equipoActual);		
-		comprobarRespuesta(respuestaDelEquipo,preguntaRandom);									
+	document.getElementById('puntosxronda').innerHTML = contadorGeneralxRonda;
+	console.log('turnoe1:' + turnoEquipo1 + ' turnoe2:'+ turnoEquipo2 + ' respuestas por pregunta:' + respuestasPorPregunta);	
 
-		}, 2500);				
+	setTimeout(function(){	
+		if(!turnoEquipo1 && !turnoEquipo2 && respuestasPorPregunta == 0){
+			debugger;
+			document.getElementById("turnoEquipo1").disabled = false;
+			document.getElementById("turnoEquipo2").disabled = false;
+			document.getElementById("turnoEquipo1").style.display = 'flex';
+			document.getElementById("turnoEquipo2").style.display = 'flex';
+			debugger;
+			buttons.forEach(function (button){
+				button.addEventListener('click',eligeTurno);
+				// function eligeTurno(event){
+				// 	var button = event.target;
+				// 	if(button.id == "turnoEquipo1"){
+				// 		document.getElementById("turnoEquipo1").disabled = true;
+				// 	    document.getElementById("turnoEquipo2").disabled = true;									    
+				// 		document.getElementById("turnoEquipo1").style.display = 'none';
+				// 	    document.getElementById("turnoEquipo2").style.display = 'none';
+				// 	    turnoEquipo1 = true;
+				// 		alert('¡Turno Equipo 1!');
+				// 		debugger;
+				// 		setTimeout(comprobarTurno(preguntaRandom), 2500);				
+				// 	}
+				// 	if(button.id == "turnoEquipo2"){
+				// 		document.getElementById("turnoEquipo1").disabled = true;
+				// 		document.getElementById("turnoEquipo2").disabled = true;				
+				// 		document.getElementById("turnoEquipo1").style.display = 'none';
+				// 	    document.getElementById("turnoEquipo2").style.display = 'none';
+				// 	    turnoEquipo2 = true;
+				// 		alert("¡Turno Equipo 2!");
+				// 		debugger;
+				// 		setTimeout(comprobarTurno(preguntaRandom), 2500);				
+				// 	}
+				// }
+
+				setTimeout(function(){
+					button.removeEventListener("click", eligeTurno);				
+				}, 2500);			
+			});			
+		}
+		else{
+			debugger;
+			setTimeout(function(){
+				if(turnoEquipo1)
+					equipoActual = "Equipo1";
+				else
+					equipoActual = "Equipo2";
+				let respuestaDelEquipo = prompt("Ingresa tu respuesta "+ equipoActual);		
+				debugger;
+				comprobarRespuesta(respuestaDelEquipo,preguntaRandom);									
+			}, 2500);			
+		}
+	}, 2500);	
 }
+
+
+
+function eligeTurno(event){
+					var button = event.target;
+					console.log(button);
+					debugger;
+					if(button.id == "turnoEquipo1"){
+						document.getElementById("turnoEquipo1").disabled = true;
+					    document.getElementById("turnoEquipo2").disabled = true;									    
+						document.getElementById("turnoEquipo1").style.display = 'none';
+					    document.getElementById("turnoEquipo2").style.display = 'none';
+					    turnoEquipo1 = true;
+						alert('¡Turno Equipo 1!');
+						debugger;
+						setTimeout(comprobarTurno(preguntaRandom), 2500);				
+					}
+					if(button.id == "turnoEquipo2"){
+						document.getElementById("turnoEquipo1").disabled = true;
+						document.getElementById("turnoEquipo2").disabled = true;				
+						document.getElementById("turnoEquipo1").style.display = 'none';
+					    document.getElementById("turnoEquipo2").style.display = 'none';
+					    turnoEquipo2 = true;
+						alert("¡Turno Equipo 2!");
+						debugger;
+						setTimeout(comprobarTurno(preguntaRandom), 2500);				
+					}
+				}
+
+
+
+
+
+
+
+
+
+
+
+function comprobarTurno(preguntaRandom){
+	if(turnoEquipo1)
+		equipoActual = "Equipo1";
+	else
+		equipoActual = "Equipo2";
+	let respuestaDelEquipo = prompt("Ingresa tu respuesta "+ equipoActual);		
+	debugger;
+	comprobarRespuesta(respuestaDelEquipo,preguntaRandom);									
+}
+
+
+
 
 function roboDePuntos(preguntaRandom)
 {
@@ -238,7 +321,7 @@ var pregunta =
   {pregunta:"Cuando nadas en el mar, ¿De qué debes tener cuidado?",respuesta:{"tiburon":67,"ahogarse":16,"olas":12,"agua":3,"profundo":2}},
   {pregunta:"¿Cuál fue el primer alimento que aprendiste a cocinar?",respuesta:{"huevos":33,"frijoles":31,"arroz":19,"sopa":9,"carne":8}},
   {pregunta:"Además de la iglesia, lugar común para casarse",respuesta:{"playa":36,"ante juez":21,"registro civil":17,"casa":15,"corte":11}},
-  {pregunta:"Planeta que es muy común ver en las oficinas de hollywood",respuesta:{"marte":58,"tierra":19,"luna":15,"jupiter":5,"sol":3}},
+  {pregunta:"Planeta que es muy común ver en las películas de hollywood",respuesta:{"marte":58,"tierra":19,"luna":15,"jupiter":5,"sol":3}},
   {pregunta:"Fruta que compras en varias piezas",respuesta:{"uva":35,"platano":19,"manzana":15,"naranja":18,"fresa":13}},
 
   {pregunta:"Menciona algo que cargas con mucho cuidado",respuesta:{"bebe":38,"bolso":37,"niños":12,"cartera":10,"dinero":3}},

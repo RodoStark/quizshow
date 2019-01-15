@@ -1,4 +1,13 @@
 /*table.background { background: url("images/bg-03.jpg") no-repeat; } */
+table th {
+  text-align: left;
+}
+table tr {
+  text-align: left;
+}
+
+
+
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
 
@@ -172,13 +181,14 @@ iframe {
 .contact100-form-title {
   display: block;
   width: 100%;
-  font-family: Raleway-Black;
+  font-family: Raleway-Black;  
   font-size: 30px;
   color: #333333;
   line-height: 1.2;
   text-transform: uppercase;
-  text-align: left;
+  text-align: center;
   padding-bottom: 32px;    
+
 }
 
 
